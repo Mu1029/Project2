@@ -26,8 +26,8 @@ validation_dir = os.path.join(data_folder, "Validation")
 
 train_data_gen = ImageDataGenerator(
     shear_range = 0.2,        
-    zoom_range = 0.2,         
-    horizontal_flip = True    
+    zoom_range = 0.2,    
+    horizontal_flip = True       
 )
 
 validation_data_gen = ImageDataGenerator(
@@ -67,11 +67,14 @@ model = models.Sequential()
     # convolutional base
 
 model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape = (100, 100, 3)))
+# model.add(layers.LeakyReLU(alpha=0.01))
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+# model.add(layers.LeakyReLU(alpha=0.01))
 model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(128, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+# model.add(layers.LeakyReLU(alpha=0.01))
+# model.add(layers.MaxPooling2D((2, 2)))
 
     # flatten layer
     
@@ -79,9 +82,10 @@ model.add(layers.Flatten())
 
     # dense layers
     
-model.add(layers.Dense(128, activation='relu'))
-model.add(layers.Dropout(0.5))
+model.add(layers.Dense(64, activation='elu'))
+model.add(layers.Dropout(0.45))
 model.add(layers.Dense(4, activation='softmax'))
+
 
     # displaying model summary
     
@@ -89,7 +93,7 @@ model.add(layers.Dense(4, activation='softmax'))
 
     # compiling model
     
-model.compile(optimizer='adam',
+model.compile(optimizer='adagrad',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
@@ -100,7 +104,6 @@ model.compile(optimizer='adam',
     # fiting the model
 
 history = model.fit(train_dataset, epochs=10, validation_data = validation_dataset)
-
     
 
 #   Step 4
@@ -109,16 +112,16 @@ history = model.fit(train_dataset, epochs=10, validation_data = validation_datas
     
 plt.plot(history.history['accuracy'], label='Training Accuracy')
 plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
-plt.title('Model accuracy')
+plt.title('Model Accuracy')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
-plt.legend(loc='bottom right')
+plt.legend(loc='lower right')
 plt.show()
 
 
 plt.plot(history.history['loss'], label='Training Loss')
 plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.title('Model loss')
+plt.title('Model Loss')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend(loc='upper right')
