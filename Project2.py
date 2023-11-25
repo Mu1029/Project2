@@ -57,9 +57,11 @@ train_dataset = train_dataset.prefetch(buffer_size = AUTOTUNE)
 validation_dataset = validation_dataset.prefetch(buffer_size = AUTOTUNE)
 
 
-
 #  Step 2
-    
+
+np.random.seed(42)
+tf.random.set_seed(42)
+
     # defining model
 
 model = models.Sequential()
@@ -72,7 +74,7 @@ model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 # model.add(layers.LeakyReLU(alpha=0.01))
 model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+# model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 # model.add(layers.LeakyReLU(alpha=0.01))
 # model.add(layers.MaxPooling2D((2, 2)))
 
@@ -82,8 +84,8 @@ model.add(layers.Flatten())
 
     # dense layers
     
-model.add(layers.Dense(64, activation='elu'))
-model.add(layers.Dropout(0.45))
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dropout(0.55))
 model.add(layers.Dense(4, activation='softmax'))
 
 
@@ -93,10 +95,9 @@ model.add(layers.Dense(4, activation='softmax'))
 
     # compiling model
     
-model.compile(optimizer='adagrad',
+model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
-
 
 
 #   Step 3
