@@ -1,6 +1,5 @@
 
 import os
-import pandas as pd
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -84,7 +83,7 @@ model.add(layers.Flatten())
     # dense layers
     
 model.add(layers.Dense(64, activation='relu'))
-model.add(layers.Dropout(0.55))
+model.add(layers.Dropout(0.5))
 model.add(layers.Dense(4, activation='softmax'))
 
 
@@ -103,7 +102,7 @@ model.compile(optimizer='adagrad',
 
     # fiting the model
 
-history = model.fit(train_dataset, epochs=50, validation_data = validation_dataset)
+history = model.fit(train_dataset, epochs=20, validation_data = validation_dataset)
     
 
 #   Step 4
@@ -136,4 +135,4 @@ print(f"Test Loss: {test_loss}")
 
     # saving model
     
-model.save('P2_model.h5')
+model.save('P2_model.keras')
